@@ -1,0 +1,138 @@
+---
+#
+# The network connection profile provides client applications the information about the target
+# blockchain network that are necessary for the applications to interact with it. These are all
+# knowledge that must be acquired from out-of-band sources. This file provides such a source.
+#
+name: "network_property-registration"
+
+x-type: "hlfv1"
+
+description: "Property Registration Network"
+
+version: "1.0"
+
+client:
+  organization: registrar
+  connection:
+    timeout:
+      peer:
+        endorser: 300
+        eventHub: 300
+        eventReg: 300
+      orderer: 300
+
+channels:
+  registrationchannel:
+    orderers:
+      - orderer.property-registration-network.com
+    peers:
+      peer0.registrar.property-registration-network.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      peer1.registrar.property-registration-network.com:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+      peer0.users.property-registration-network.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      peer1.users.property-registration-network.com:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+      peer2.users.property-registration-network.com:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+      
+organizations:
+registrar:
+    mspid: registrarMSP
+    peers:
+      - peer0.registrar.property-registration-network.com
+      - peer1.registrar.property-registration-network.com
+    certificateAuthorities:
+      - ca.registrar.property-registration-network.com
+users:
+    mspid: usersMSP
+    peers:
+      - peer0.users.property-registration-network.com
+      - peer1.users.property-registration-network.com
+      - peer2.users.property-registration-network.com
+    certificateAuthorities:
+      - ca.users.property-registration-network.com
+  
+orderers:
+  orderer.property-registration-network.com:
+    url: grpc://localhost:7050
+    grpcOptions:
+      ssl-target-name-override: orderer.property-registration-network.com
+    tlsCACerts:
+      path: /home/upgrad/workspace/property-registration-network/network/crypto-config/ordererOrganizations/property-registration-network.com/orderers/orderer.property-registration-network.com/msp/tlscacerts/tlsca.property-registration-network.com-cert.pem
+
+peers:
+  peer0.registrar.property-registration-network.com:
+    url: grpc://localhost:7051
+    grpcOptions:
+      ssl-target-name-override: peer0.registrar.property-registration-network.com
+      request-timeout: 120001
+    tlsCACerts:
+      path: /home/upgrad/workspace/property-registration-network/network/crypto-config/peerOrganizations/registrar.property-registration-network.com/peers/peer0.registrar.property-registration-network.com/msp/tlscacerts/tlsca.registrar.property-registration-network.com-cert.pem
+  peer1.registrar.property-registration-network.com:
+    url: grpc://localhost:8051
+    grpcOptions:
+      ssl-target-name-override: peer1.registrar.property-registration-network.com
+      request-timeout: 120001
+    tlsCACerts:
+      path: /home/upgrad/workspace/property-registration-network/network/crypto-config/peerOrganizations/registrar.property-registration-network.com/peers/peer1.registrar.property-registration-network.com/msp/tlscacerts/tlsca.registrar.property-registration-network.com-cert.pem
+  peer0.users.property-registration-network.com:
+    url: grpc://localhost:9051
+    grpcOptions:
+      ssl-target-name-override: peer0.users.property-registration-network.com
+      request-timeout: 120001
+    tlsCACerts:
+      path: /home/upgrad/workspace/property-registration-network/network/crypto-config/peerOrganizations/users.property-registration-network.com/peers/peer0.users.property-registration-network.com/msp/tlscacerts/tlsca.users.property-registration-network.com-cert.pem
+  peer1.users.property-registration-network.com:
+    url: grpc://localhost:10051
+    grpcOptions:
+      ssl-target-name-override: peer1.users.property-registration-network.com
+      request-timeout: 120001
+    tlsCACerts:
+      path: /home/upgrad/workspace/property-registration-network/network/crypto-config/peerOrganizations/users.property-registration-network.com/peers/peer1.users.property-registration-network.com/msp/tlscacerts/tlsca.users.property-registration-network.com-cert.pem
+  peer2.users.property-registration-network.com:
+    url: grpc://localhost:11051
+    grpcOptions:
+      ssl-target-name-override: peer2.users.property-registration-network.com
+      request-timeout: 120001
+    tlsCACerts:
+      path: /home/upgrad/workspace/property-registration-network/network/crypto-config/peerOrganizations/users.property-registration-network.com/peers/peer2.users.property-registration-network.com/msp/tlscacerts/tlsca.users.property-registration-network.com-cert.pem
+  
+certificateAuthorities:
+  ca.registrar.property-registration-network.com:
+    url: http://localhost:7054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: /home/upgrad/workspace/property-registration-network/network/crypto-config/peerOrganizations/registrar.property-registration-network.com/ca/ca.registrar.property-registration-network.com-cert.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca.registrar.property-registration-network.com
+  ca.users.property-registration-network.com:
+    url: http://localhost:8054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: /home/upgrad/workspace/property-registration-network/network/crypto-config/peerOrganizations/users.property-registration-network.com/ca/ca.users.property-registration-network.com-cert.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca.users.property-registration-network.com
